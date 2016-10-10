@@ -1,0 +1,139 @@
+var email = '';
+var workspace = '';
+var startt = '';
+var endt = '';
+var token = '';
+
+Date.prototype.toDateInputValue = (function() {
+	var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+});
+
+function get_pages(pagesCallback){
+	var url = "https://toggl.com/reports/api/v2/details?user_agent="+email+"&workspace_id="+workspace+"&since="+startt+"&until="+endt;
+	
+	$.ajax({
+		type: 'GET',
+		url: url,
+		dataType: 'json',
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', 'Basic ' + btoa(token + ':api_token'));
+		},
+		success: pagesCallback
+	});
+}
+
+function pagesCallback(data){
+	num = data["total_count"];
+	pages = String(Math.ceil(num/50));
+	
+	tableau.connectionData = JSON.stringify([pages, email, workspace, token, startt, endt]);
+	
+	tableau.connectionName = "Toggl";
+	tableau.submit();
+}
+
+(function () {
+    var myConnector = tableau.makeConnector();
+	
+	myConnector.getSchema = function (schemaCallback) {
+		
+		var cols = [
+			{ id : "desc", alias : "Description", dataType : tableau.dataTypeEnum.string },
+			{ id : "start", alias : "Start Date", dataType : tableau.dataTypeEnum.datetime },
+			{ id : "end", alias : "End Date", dataType : tableau.dataTypeEnum.datetime },
+			{ id : "proj", alias : "Project", dataType : tableau.dataTypeEnum.string },
+			{ id : "task", alias : "Task", dataType : tableau.dataTypeEnum.string },
+			{ id : "client", alias : "Client", dataType : tableau.dataTypeEnum.string },
+			{ id : "bill", alias : "Billable", dataType : tableau.dataTypeEnum.float },
+			{ id : "isbill", alias : "Is Billable", dataType : tableau.dataTypeEnum.bool }
+		];
+		
+		var tableInfo = {
+			id : "toggl",
+			alias : "Toggl Detailed Report",
+			columns : cols
+		};
+		
+		schemaCallback([tableInfo]);
+	};
+	
+	myConnector.getData = function (table, doneCallback) {
+		var tableData = [];
+		var async_request = [];
+		var cd = JSON.parse(tableau.connectionData);
+		var len = parseInt(cd[0]);
+		var email = cd[1];
+		var workspace = cd[2];
+		var token = cd[3];
+		var startt = cd[4];
+		var endt = cd[5];
+		var url = "https://toggl.com/reports/api/v2/details?user_agent="+email+"&workspace_id="+workspace+"&since="+startt+"&until="+endt+"&page=";
+		
+		for(q = 1; q <= len; q++){
+			async_request.push(
+			$.ajax({
+				type: 'GET',
+				url: url + q,
+				dataType: 'json',
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader('Authorization', 'Basic ' + btoa(token + ':api_token'));
+				},
+				success: function (resp) {
+					var tasks = resp.data; 
+					for (var i = 0, len = tasks.length; i < len; i++){
+						desc = tasks[i].description;
+						start = tasks[i].start.substring(0,10) + " " + tasks[i].start.substring(11,18);
+						end = tasks[i].end.substring(0,10) + " " + tasks[i].end.substring(11,18);
+						proj = tasks[i].project;
+						task = tasks[i].task;
+						client = tasks[i].client;
+						bill = tasks[i].billable;
+						isbill = tasks[i].is_billable;
+						
+						tableData.push({
+							"desc" : desc,
+							"start" : start,
+							"end" : end,
+							"proj" : proj,
+							"tasl" : task,
+							"client" : client,
+							"bill" : bill,
+							"isbill" : isbill
+						});
+					}
+				}
+			})
+			);
+		}
+		
+		$.when.apply(null, async_request).done( function(){
+			table.appendRows(tableData);
+			doneCallback();
+		});
+		
+	};
+	
+    tableau.registerConnector(myConnector);
+	
+	$(document).ready(function () {
+		inputdate = new Date();
+		$('#enddate').val(inputdate.toDateInputValue());
+		inputdate.setDate(inputdate.getDate() - 30);
+		$("#startdate").val( inputdate.toDateInputValue() );
+		$("#submitb").click(function () {
+			email = $('#email').val().trim();
+			workspace = $('#workspace').val().trim();
+			token = $('#token').val().trim();
+			startt = $('#startdate').val();
+			endt = $('#enddate').val();
+			get_pages(pagesCallback);
+		});
+	});
+	
+})();
+
+
+
+
