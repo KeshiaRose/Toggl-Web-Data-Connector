@@ -13,7 +13,7 @@ https://keshiarose.github.io/Toggl-Web-Data-Connector/togglwdc.html
 
 **Workspace ID:** Use the number shown in the url on the "Workspace Settings" page
 
-For example: [https://toggl.com/app/workspaces/**999999**/settings]()
+>For example: https://toggl.com/app/workspaces/**999999**/settings
 
 **API Token:** This can be found at the bottom of your "[My Profile](https://toggl.com/app/profile)" page
 
