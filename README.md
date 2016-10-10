@@ -1,8 +1,6 @@
 # Toggl Web Data Connector
 This Tableau Web Data Connector pulls in data from the Detail Reports view from toggl.com
 
-To use this Web Data Conenctor copy the following link into Tableau
-
 # How to Connect
 To connect to your time tracking data create a new Web Data Connector data source and enter the following url:
 ```
