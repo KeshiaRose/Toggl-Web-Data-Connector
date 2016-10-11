@@ -68,11 +68,11 @@ function pagesCallback(data){
 		var workspace = cd[2];
 		var token = cd[3];
 		var startt = cd[4];
-		if(cd[6] == "checked"){
-			var endt = new Date().toDateInputValue();
-			} else {
-			var endt = cd[5];
-		}
+		if(cd[6] == "checked"){ 
+			var endt = new Date().toDateInputValue(); 
+		} else { 
+			var endt = cd[5]; 
+		} 
 		var url = "https://toggl.com/reports/api/v2/details?user_agent="+email+"&workspace_id="+workspace+"&since="+startt+"&until="+endt+"&page=";
 		tableau.log(url);
 		
@@ -128,25 +128,25 @@ function pagesCallback(data){
 		inputdate.setDate(inputdate.getDate() - 30);
 		$("#startdate").val( inputdate.toDateInputValue() );
 		
-		$("#today").change(function() {
-			if(this.checked) {
-				$("#enddate").prop('disabled', true);
-			} else {
-				$("#enddate").prop('disabled', false);
-			}
-		});
+		$("#today").change(function() { 
+			if(this.checked) { 
+				$("#enddate").prop('disabled', true); 
+			} else { 
+				$("#enddate").prop('disabled', false); 
+			} 
+		}); 
 		
 		$("#submitb").click(function () {
 			email = $('#email').val().trim();
 			workspace = $('#workspace').val().trim();
 			token = $('#token').val().trim();
 			startt = $('#startdate').val();
-			if($("#today").attr('checked') ){
-				endt = new Date().toDateInputValue();
-			} else {
-				endt = $('#enddate').val();
-			}
-			check = $('#today').attr('checked');
+			if($("#today").attr('checked') ){ 
+				endt = new Date().toDateInputValue(); 
+			} else { 
+				endt = $('#enddate').val(); 
+			} 
+			check = $('#today').attr('checked'); 
 			get_pages(pagesCallback);
 		});
 	});
