@@ -12,37 +12,45 @@
 		<div class="container" style="height:100%;">
 			<div class="row" style="text-align:center">
 				<img src="http://blog.toggl.com/wp-content/uploads/2015/04/toggl-logo-light.png" style="max-width:200px;" />
-				</div>
+			</div>
 			<div class="row">
 				<div class="col-xs-2"></div>
 				<div class="col-xs-8" style="text-align:center">
-					<div class="form-group">
-						<label>Email</label>
-						<input type="email" class="form-control" id="email" placeholder="Example: you@email.com" required />
+					<div class="row">
+						<div class="form-group">
+							<label>Email</label>
+							<input type="email" class="form-control" id="email" placeholder="Example: you@email.com" required />
+						</div>
+						<div class="form-group">
+							<label>Workspace ID</label>
+							<input type="text" class="form-control" id="workspace" placeholder="Example: 999999" required />
+						</div>
+						<div class="form-group">
+							<label>API Token</label>
+							<input type="text" class="form-control" id="token" placeholder="Example: vz0dt5uu9n2ff4lubls1kgfi3e2l5d8t" required />
+						</div>
 					</div>
-					<div class="form-group">
-						<label>Workspace ID</label>
-						<input type="text" class="form-control" id="workspace" placeholder="Example: 999999" required />
+					<div class="row">
+						<div class="form-group" style="float:left;">
+							<label>Start Date</label>
+							<input type="date" class="form-control" id="startdate" required />
+						</div>
+						<div class="form-group" style="float:right;">
+							<label>End Date</label>
+							<input type="date" class="form-control" id="enddate" required disabled/>
+							<input type="checkbox" id="today" checked> Always today
+							
+						</div>
 					</div>
-					<div class="form-group">
-						<label>API Token</label>
-						<input type="text" class="form-control" id="token" placeholder="Example: vz0dt5uu9n2ff4lubls1kgfi3e2l5d8t" required />
-					</div>
-					<div class="form-group" style="float:left;">
-						<label>Start Date</label>
-						<input type="date" class="form-control" id="startdate" required />
-					</div>
-					<div class="form-group" style="float:right;">
-						<label>End Date</label>
-						<input type="date" class="form-control" id="enddate" required />
-					</div>
-					<div class="form-group">
-						<button name="submitb" id="submitb" class="btn btn-primary" type="submit">Get Toggl Data</button>
+					<div class="row">
+						<div class="form-group">
+							<button id="submitb" class="btn btn-primary" type="submit">Get Toggl Data</button>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="row" style="text-align:center">
-			<p><i><b>Workspace ID:</b> Use the number shown in the url on the "Workspace Settings" page</i></br>
+			<div class="row" style="text-align:center;font-size:.9em;">
+				<p><i><b>Workspace ID:</b> Use the number shown in the url on the "Workspace Settings" page</i></br>
 				<i>For example: https://toggl.com/app/workspaces/<b>999999</b>/settings</i></p>
 				<p><i><b>API Token:</b> This can be found at the bottom of your "<a href="https://toggl.com/app/profile" target="_blank">My Profile</a>" page</i></p>
 				<p>Made by <a href="https://keshiarose.github.io/Toggl-Web-Data-Connector/" target="_blank">Keshia Rose</a></p>
