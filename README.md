@@ -15,4 +15,4 @@ https://keshiarose.github.io/Toggl-Web-Data-Connector/togglwdc.html
 
 **API Token:** This can be found at the bottom of your "[My Profile](https://toggl.com/app/profile)" page
 
-**Start & End Dates:** The timeframe you would like to pull data for
+**Start & End Dates:** The timeframe you would like to pull data for. Check "Always today" to always use the current day for refreshes.
