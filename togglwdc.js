@@ -48,7 +48,8 @@ function pagesCallback(data){
 			{ id : "client", alias : "Client", dataType : tableau.dataTypeEnum.string },
 			{ id : "bill", alias : "Billable", dataType : tableau.dataTypeEnum.float },
 			{ id : "isbill", alias : "Is Billable", dataType : tableau.dataTypeEnum.bool },
-			{ id : "user", alias : "User", dataType : tableau.dataTypeEnum.string }
+			{ id : "user", alias : "User", dataType : tableau.dataTypeEnum.string },
+			{ id : "dur", alias : "Duration (Seconds)", dataType : tableau.dataTypeEnum.int }
 		];
 		
 		var tableInfo = {
@@ -98,6 +99,7 @@ function pagesCallback(data){
 						bill = tasks[i].billable;
 						isbill = tasks[i].is_billable;
 						user = tasks[i].user;
+						dur = tasks[i].dur/1000;
 						
 						tableData.push({
 							"desc" : desc,
@@ -108,7 +110,8 @@ function pagesCallback(data){
 							"client" : client,
 							"bill" : bill,
 							"isbill" : isbill,
-							"user" : user
+							"user" : user,
+							"dur" : dur
 						});
 					}
 				}
