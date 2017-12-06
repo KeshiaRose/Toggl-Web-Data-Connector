@@ -40,6 +40,7 @@ function pagesCallback(data){
 	myConnector.getSchema = function (schemaCallback) {
 		
 		var cols = [
+			{ id : "id", alias : "Entry ID", dataType : tableau.dataTypeEnum.int },
 			{ id : "desc", alias : "Description", dataType : tableau.dataTypeEnum.string },
 			{ id : "start", alias : "Start Date", dataType : tableau.dataTypeEnum.datetime },
 			{ id : "end", alias : "End Date", dataType : tableau.dataTypeEnum.datetime },
@@ -49,7 +50,8 @@ function pagesCallback(data){
 			{ id : "bill", alias : "Billable", dataType : tableau.dataTypeEnum.float },
 			{ id : "isbill", alias : "Is Billable", dataType : tableau.dataTypeEnum.bool },
 			{ id : "user", alias : "User", dataType : tableau.dataTypeEnum.string },
-			{ id : "dur", alias : "Duration (Seconds)", dataType : tableau.dataTypeEnum.int }
+			{ id : "dur", alias : "Duration (Seconds)", dataType : tableau.dataTypeEnum.int },
+			{ id : "tags", alias : "Tags", dataType : tableau.dataTypeEnum.string }
 		];
 		
 		var tableInfo = {
@@ -90,6 +92,7 @@ function pagesCallback(data){
 				success: function (resp) {
 					var tasks = resp.data; 
 					for (var i = 0, len = tasks.length; i < len; i++){
+						id = tasks[i].id;
 						desc = tasks[i].description;
 						start = tasks[i].start.substring(0,10) + " " + tasks[i].start.substring(11,18);
 						end = tasks[i].end.substring(0,10) + " " + tasks[i].end.substring(11,18);
@@ -100,8 +103,14 @@ function pagesCallback(data){
 						isbill = tasks[i].is_billable;
 						user = tasks[i].user;
 						dur = tasks[i].dur/1000;
+						tags = [];
+						for (t in tasks[i].tags) {
+							tags.push(tasks[i].tags[t]);
+						}
+						tags = tags.join(", ");
 						
 						tableData.push({
+							"id" : id,
 							"desc" : desc,
 							"start" : start,
 							"end" : end,
@@ -111,7 +120,8 @@ function pagesCallback(data){
 							"bill" : bill,
 							"isbill" : isbill,
 							"user" : user,
-							"dur" : dur
+							"dur" : dur,
+							"tags" : tags
 						});
 					}
 				}
