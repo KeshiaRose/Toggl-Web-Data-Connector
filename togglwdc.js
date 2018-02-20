@@ -115,7 +115,7 @@ function pagesCallback(data){
 							"start" : start,
 							"end" : end,
 							"proj" : proj,
-							"tasl" : task,
+							"task" : task,
 							"client" : client,
 							"bill" : bill,
 							"isbill" : isbill,
