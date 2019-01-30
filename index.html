@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Toggl Web Data Connector</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: 'Benton Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .row {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .top {
+            max-width: 1000px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            height: 400px;
+            margin: 0 50px;
+        }
+        
+        .bottom {
+            margin: 0 50px;
+            max-width: 1000px;
+        }
+        
+        .logo {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+        
+        .header {
+            font-size: 72px;
+        }
+        
+        .subheader {
+            font-size: 32px;
+            text-align: center;
+        }
+        
+        .gray {
+            background-color: #cccccc;
+        }
+        
+        .highlight {
+            background-color: #F6F8FA;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        a {
+            font-size: 20px;
+            text-decoration: none;
+            color: #E01B22;
+            font-weight: bold;
+        }
+        
+        .bottom a {
+            font-size: 16px;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class='container'>
+        <div class='row gray'>
+            <div class='top'>
+                <div class='logo'>
+                    <img src='https://keshiarose.github.io/Toggl-Web-Data-Connector/toggl-logo-light.png' width='300px'>
+                </div>
+                <span class='header'>Web Data Connector</span>
+                <span class='subheader'>A Tableau Web Data Connector that pulls in your task tracking data from the Detail Reports view on toggl.com</span>
+                <a href='https://github.com/KeshiaRose/Toggl-Web-Data-Connector'>View on GitHub</a>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='bottom'>
+                <h1 id='howtoconnect'>How to Connect</h1>
+
+                <p>To connect to your time tracking data create a new <strong>Web Data Connector</strong> data connection and enter the following url:</p>
+
+                <div class='highlight'>
+                    <code>https://keshiarose.github.io/Toggl-Web-Data-Connector/togglwdc.html
+                    </code>
+                </div>
+
+                <h2 id='inputsrequired'>Required Inputs</h2>
+
+                <p><strong>Email:</strong> Please enter your email to receive any errors from Toggl.</p>
+
+                <p><strong>Workspace ID:</strong> Use the number shown in the url on the 'Workspace Settings' page</p>
+
+                <blockquote>
+                    <p>For example: https://toggl.com/app/workspaces/<strong>999999</strong>/settings</p>
+                </blockquote>
+
+                <p><strong>API Token:</strong> This can be found at the bottom of your '<a href='https://toggl.com/app/profile'>My Profile</a>' page</p>
+
+                <p><strong>Start &amp; End Dates:</strong> The time frame you would like to pull data for. Check <strong>'Always today'</strong> to always use the current day for refreshes. </br>
+                    <em>Note: The Toggl API has a maximum of a year time frame.</em></p>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
