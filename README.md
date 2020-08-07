@@ -6,6 +6,13 @@ This Tableau Web Data Connector pulls in your task tracking data from the Detail
 # How to Connect
 To connect to your time tracking data create a new **Web Data Connector** data connection and enter the following url:
 
+### 2019.4+
+
+```
+https://keshiarose.github.io/Toggl-Web-Data-Connector/togglwdc_19.4.html
+```
+### Older versions
+
 ```
 https://keshiarose.github.io/Toggl-Web-Data-Connector/togglwdc.html
 ```
