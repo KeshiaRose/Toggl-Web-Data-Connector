@@ -309,7 +309,7 @@
                         tasks = tasks.concat(response.data);
                         pagescount++;
                         if (pagescount < totalPages) {
-                            getData(url);
+                            getData(url, token, totalPages, table, doneCallback);
                         } else {
                             buildTable(tasks, table, doneCallback)
                         }
