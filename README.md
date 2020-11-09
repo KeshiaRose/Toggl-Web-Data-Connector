@@ -1,4 +1,4 @@
-![Working](https://img.shields.io/badge/Status-Working-Green)
+![Working](https://img.shields.io/badge/Status-Working-brightgreen)
 
 # Toggl Web Data Connector
 This Tableau Web Data Connector pulls in your task tracking data from the Detail Reports view on toggl.com
