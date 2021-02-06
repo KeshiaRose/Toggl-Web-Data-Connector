@@ -1,7 +1,7 @@
 ![Working](https://img.shields.io/badge/Status-Working-brightgreen)
 
 # Toggl Track Web Data Connector
-This is a [**Tableau Web Data Connector**](https://tableau.github.io/webdataconnector/docs/wdc_use_in_tableau.html) that pulls in your task tracking data from the Detailed Report view on [track.toggl.com](https://track.toggl.com)
+This is a [**Tableau Web Data Connector**](https://tableau.github.io/webdataconnector/docs/wdc_use_in_tableau.html) that pulls in your task tracking data from the Detailed Report view on [Toggl Track](https://toggl.com/track/)
 
 ## How to Connect
 To connect to your time tracking data create a new Web Data Connector data connection and enter the following url:
