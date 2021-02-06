@@ -103,7 +103,7 @@
     <div class="hero">
       <div class="left">
         <a href="https://track.toggl.com/">
-          <img class="logo" src="/toggl-track-logo-pink.png" />
+          <img class="logo" src="./toggl-track-logo-pink.png" />
         </a>
         <p class="header">Web Data Connector</p>
         <p class="subheader">A Tableau Web Data Connector that pulls in your task tracking data from the Detailed
@@ -112,7 +112,7 @@
         <a class="github" href="https://github.com/KeshiaRose/Toggl-Web-Data-Connector">View on GitHub</a>
       </div>
       <div class="right">
-        <img class="hero_image" src="/toggl-track-report.png" />
+        <img class="hero_image" src="./toggl-track-report.png" />
       </div>
     </div>
     <div class="readme" id="readme">
@@ -121,7 +121,7 @@
   </div>
   <script>
     (async function loadReadMe() {
-      const response = await fetch('/README.md')
+      const response = await fetch('./README.md')
       const data = await response.text();
       const converter = new showdown.Converter()
       const html = converter.makeHtml(data);

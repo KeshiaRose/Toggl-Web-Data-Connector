@@ -22,7 +22,7 @@ https://keshiarose.github.io/Toggl-Web-Data-Connector/togglwdc.html
 
 **Workspace ID:** Use the number shown in the url on the "[Reports](https://track.toggl.com/reports/detailed)" page
 
->For example: https://track.toggl.com/reports/detailed/**999999**
+>For example: https:<span></span>//track.toggl.com/reports/detailed/**999999**
 
 **API Token:** This can be found at the bottom of your "[My Profile](https://toggl.com/app/profile)" page
 
