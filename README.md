@@ -1,17 +1,17 @@
 ![Working](https://img.shields.io/badge/Status-Working-brightgreen)
 
-# Toggl Web Data Connector
-This Tableau Web Data Connector pulls in your task tracking data from the Detail Reports view on toggl.com
+# Toggl Track Web Data Connector
+This is a [**Tableau Web Data Connector**](https://tableau.github.io/webdataconnector/docs/wdc_use_in_tableau.html) that pulls in your task tracking data from the Detailed Report view on [track.toggl.com](https://track.toggl.com)
 
-# How to Connect
-To connect to your time tracking data create a new **Web Data Connector** data connection and enter the following url:
+## How to Connect
+To connect to your time tracking data create a new Web Data Connector data connection and enter the following url:
 
-### 2019.4+
+#### Tableau Desktop 2019.4+
 
 ```
 https://keshiarose.github.io/Toggl-Web-Data-Connector/togglwdc_19.4.html
 ```
-### Older versions
+#### Older versions
 
 ```
 https://keshiarose.github.io/Toggl-Web-Data-Connector/togglwdc.html
@@ -20,11 +20,13 @@ https://keshiarose.github.io/Toggl-Web-Data-Connector/togglwdc.html
 ## Inputs Required
 **Email:** Please enter your email to receive any errors from Toggl.
 
-**Workspace ID:** Use the number shown in the url on the "Workspace Settings" page
+**Workspace ID:** Use the number shown in the url on the "[Reports](https://track.toggl.com/reports/detailed)" page
 
->For example: https:[]()//toggl.[]()com/app/workspaces/**999999**/settings
+>For example: https://track.toggl.com/reports/detailed/**999999**
 
 **API Token:** This can be found at the bottom of your "[My Profile](https://toggl.com/app/profile)" page
 
-**Start & End Dates:** The time frame you would like to pull data for. Check **"Always today"** to always use the current day for refreshes.\
-_Note: Toggl API has a maximum of a year time frame_
+**Start & End Dates:** The time frame you would like to pull data for. Check **"Always today"** to always use the current day for refreshes.
+
+
+_Note: The Toggl API has a maximum time frame of one year._
