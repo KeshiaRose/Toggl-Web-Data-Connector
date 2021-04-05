@@ -164,6 +164,7 @@
       <div>
         <div class='row'>
           <label>Email</label>
+          <span class='hint'>Email address used with toggl</span>
           <input type='email' id='email' placeholder='jane@janedoe.com' required />
         </div>
         <div class='row'>
@@ -192,6 +193,11 @@
             <input type='checkbox' id='today' checked>
             <span>Always today</span>
           </div>
+        </div>
+        <div class='row'>
+          <label>Custom Parameters (Advanced & Optional)</label>
+          <span class='hint'>Here you can add custom query parameters to your request. Be careful!</span>
+          <input type='text' id='custom' placeholder='client_ids=21530423,19860227,19860223&billable=yes' required />
         </div>
         <div class='row'>
           <button id='submit' type='submit'>Get Toggl Data</button>
@@ -225,6 +231,7 @@
           $('#enddate').val(data.end || '')
           $("#enddate").prop('disabled', data.check);
           $('#today').prop('checked', data.check)
+          $('#custom').val(data.custom || '')
         }
 
         initCallback();
@@ -299,8 +306,8 @@
         const start = (new Date(Math.max(new Date(cd.start), new Date(cd.end).setYear(new Date(cd.end)
           .getFullYear() - 1)))).toDateInputValue();
 
-        var url = "https://toggl.com/reports/api/v2/details?user_agent=" + cd.email + "&workspace_id=" +
-          cd.workspace + "&since=" + start + "&until=" + end;
+        var url = "https://api.track.toggl.com/reports/api/v2/details?user_agent=" + cd.email + "&workspace_id=" +
+          cd.workspace + "&since=" + start + "&until=" + end + "&" + cd.custom;
 
         $.ajax({
           type: 'GET',
@@ -412,6 +419,7 @@
               start: $('#startdate').val(),
               end: $('#enddate').val(),
               check: $('#today').is(':checked'),
+              custom: $('#custom').val().trim(),
             });
 
             tableau.connectionName = "Toggl";
