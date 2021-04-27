@@ -11,7 +11,7 @@ Date.prototype.toDateInputValue = (function() {
 });
 
 function get_pages(pagesCallback) {
-    var url = "https://toggl.com/reports/api/v2/details?user_agent=" + email + "&workspace_id=" + workspace + "&since=" + startt + "&until=" + endt;
+    var url = "https://api.track.toggl.com/reports/api/v2/details?user_agent=" + email + "&workspace_id=" + workspace + "&since=" + startt + "&until=" + endt;
 
     $.ajax({
         type: 'GET',
@@ -77,7 +77,7 @@ function pagesCallback(data) {
         } else {
             var endt = cd[5];
         }
-        var url = "https://toggl.com/reports/api/v2/details?user_agent=" + email + "&workspace_id=" + workspace + "&since=" + startt + "&until=" + endt + "&page=";
+        var url = "https://api.track.toggl.com/reports/api/v2/details?user_agent=" + email + "&workspace_id=" + workspace + "&since=" + startt + "&until=" + endt + "&page=";
         tableau.log(url);
 
         for (q = 1; q <= len; q++) {
