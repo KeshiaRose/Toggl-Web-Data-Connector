@@ -1,436 +1,486 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Toggl Web Data Connector</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://connectors.tableau.com/libs/tableauwdc-2.3.latest.js" type="text/javascript"></script>
+    <style>
+      * {
+        font-family: 'Benton Sans', 'Segoe UI', Verdana, Helvetica, sans-serif;
+        color: #2c1338;
+      }
 
-<head>
-  <meta charset='utf-8' />
-  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <title>Toggl Web Data Connector</title>
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src='https://connectors.tableau.com/libs/tableauwdc-2.3.latest.js' type='text/javascript'></script>
-  <style>
-    * {
-      font-family: 'Benton Sans', 'Segoe UI', Verdana, Helvetica, sans-serif;
-      color: #2C1338;
-    }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        background-color: #fff;
+        font-size: 16px;
+      }
 
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      background-color: #fff;
-      font-size: 16px;
-    }
+      .container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
-    .container {
-      height: 100%;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+      .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 350px;
+        box-sizing: border-box;
+      }
 
-    .content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 350px;
-      box-sizing: border-box;
-    }
+      .logo {
+        width: 250px;
+        margin: 10px;
+      }
 
-    .logo {
-      width: 250px;
-      margin: 10px;
-    }
+      label {
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
 
-    label {
-      width: 100%;
-      font-weight: bold;
-      font-size: 14px;
-      margin-bottom: 5px;
-    }
+      .hint {
+        width: 100%;
+        font-size: 12px;
+        font-style: italic;
+        margin-bottom: 5px;
+      }
 
-    .hint {
-      width: 100%;
-      font-size: 12px;
-      font-style: italic;
-      margin-bottom: 5px;
-    }
+      .row {
+        margin: 15px;
+        display: flex;
+        flex-wrap: wrap;
+      }
 
-    .row {
-      margin: 15px;
-      display: flex;
-      flex-wrap: wrap;
-    }
+      .splitrow {
+        margin: 15px 10px;
+        display: flex;
+      }
 
-    .splitrow {
-      margin: 15px 10px;
-      display: flex;
-    }
+      .split {
+        flex: 1;
+        margin: 0 5px;
+      }
 
-    .split {
-      flex: 1;
-      margin: 0 5px;
-    }
+      .footer {
+        font-size: 12px;
+        font-style: italic;
+        text-align: center;
+      }
 
-    .footer {
-      font-size: 12px;
-      font-style: italic;
-      text-align: center;
-    }
+      .error {
+        color: #e24f54;
+        font-weight: bold;
+        margin: 10px 0 0 10px;
+        display: flex;
+        align-items: center;
+      }
 
-    .error {
-      color: #E24F54;
-      font-weight: bold;
-      margin: 10px 0 0 10px;
-      display: flex;
-      align-items: center;
-    }
+      .check {
+        font-size: 14px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: 15px;
+      }
 
-    .check {
-      font-size: 14px;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      padding-top: 15px;
-    }
+      input[type='checkbox'] {
+        padding: 0;
+        margin: 0 5px 0 0;
+        width: 25px;
+        height: 25px;
+      }
 
-    input[type=checkbox] {
-      padding: 0;
-      margin: 0 5px 0 0;
-      width: 25px;
-      height: 25px;
-    }
+      input[type='text'],
+      input[type='email'],
+      input[type='date'] {
+        padding: 8px;
+        height: 36px;
+        width: 100%;
+        font-size: 18px;
+        background-color: #eeeeee;
+        border-radius: 4px;
+        border: 0;
+        box-sizing: border-box;
+      }
 
-    input[type=text],
-    input[type=email],
-    input[type=date] {
-      padding: 8px;
-      height: 36px;
-      width: 100%;
-      font-size: 18px;
-      background-color: #eeeeee;
-      border-radius: 4px;
-      border: 0;
-      box-sizing: border-box;
-    }
+      input:disabled {
+        background-color: #ffffff;
+        color: #eeeeee;
+        text-decoration: line-through;
+      }
 
-    input:disabled {
-      background-color: #ffffff;
-      color: #eeeeee;
-      text-decoration: line-through;
-    }
+      input::placeholder {
+        font-style: italic;
+        color: #bbb;
+      }
 
-    input::placeholder {
-      font-style: italic;
-      color: #BBB;
-    }
+      button {
+        background-color: #e57cd8;
+        color: #ffffff;
+        border: 0;
+        border-radius: 5px;
+        height: 35px;
+        padding: 0 15px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
 
-    button {
-      background-color: #E57CD8;
-      color: #ffffff;
-      border: 0;
-      border-radius: 5px;
-      height: 35px;
-      padding: 0 15px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
+      button:hover {
+        background-color: #e57cd8;
+      }
 
-    button:hover {
-      background-color: #E57CD8;
-    }
+      p {
+        width: 100%;
+        margin: 5px 0;
+      }
 
-    p {
-      width: 100%;
-      margin: 5px 0;
-    }
+      a {
+        color: #e57cd8;
+        font-weight: bold;
+      }
+    </style>
+  </head>
 
-    a {
-      color: #E57CD8;
-      font-weight: bold;
-    }
-  </style>
-</head>
-
-<body>
-  <div class='container'>
-    <div class='content'>
-      <a href='https://toggl.com/track/' target='_blank'><img class='logo' src="./toggl-track-logo-pink.png" /></a>
-      <div>
-        <div class='row'>
-          <label>Email</label>
-          <span class='hint'>Email address used with toggl</span>
-          <input type='email' id='email' placeholder='jane@janedoe.com' required />
-        </div>
-        <div class='row'>
-          <label>Workspace ID</label>
-          <span class='hint'>Example: https://track.toggl.com/reports/detailed/<b>999999</b> (from <a
-              href='https://track.toggl.com/reports/detailed' target='_blank'>Reports</a> page) </span>
-          <input type='text' id='workspace' placeholder='999999' required />
-        </div>
-        <div class='row'>
-          <label>API Token</label>
-          <span class='hint'>This can be found at the bottom of your <a href='https://toggl.com/app/profile'
-              target='_blank'>My Profile</a> page</span>
-          <input type='text' id='token' placeholder='vz0dt5uu9n2ff4lubls1kgfi3e2l5d8t' required />
-        </div>
-        <div class='splitrow'>
-          <div class='split'>
-            <label>Start Date</label>
-
-            <input type='date' id='startdate' required />
+  <body>
+    <div class="container">
+      <div class="content">
+        <a href="https://toggl.com/track/" target="_blank"><img class="logo" src="./toggl-track-logo-pink.png" /></a>
+        <div>
+          <div class="row">
+            <label>Email</label>
+            <span class="hint">Email address used with toggl</span>
+            <input type="email" id="email" placeholder="jane@janedoe.com" required />
           </div>
-          <div class='split'>
-            <label>End Date</label>
-            <input type='date' id='enddate' required disabled />
+          <div class="row">
+            <label>Workspace ID</label>
+            <span class="hint"
+              >Example: https://track.toggl.com/reports/detailed/<b>999999</b>
+              (from
+              <a href="https://track.toggl.com/reports/detailed" target="_blank">Reports</a>
+              page)
+            </span>
+            <input type="text" id="workspace" placeholder="999999" required />
           </div>
-          <div class='split check'>
-            <input type='checkbox' id='today' checked>
-            <span>Always today</span>
+          <div class="row">
+            <label>API Token</label>
+            <span class="hint"
+              >This can be found at the bottom of your
+              <a href="https://toggl.com/app/profile" target="_blank">My Profile</a>
+              page</span
+            >
+            <input type="text" id="token" placeholder="vz0dt5uu9n2ff4lubls1kgfi3e2l5d8t" required />
           </div>
-        </div>
-        <div class='row'>
-          <label>Custom Parameters (Advanced & Optional)</label>
-          <span class='hint'>Here you can add custom query parameters to your request. Be careful!</span>
-          <input type='text' id='custom' placeholder='client_ids=21530423,19860227,19860223&billable=yes' required />
-        </div>
-        <div class='row'>
-          <button id='submit' type='submit'>Get Toggl Data</button>
-          <span class='error' id='error'></span>
-        </div>
-        <div class='row footer'>
-          <p>Made by <a href='https://keshiarose.github.io/Toggl-Web-Data-Connector/' target='_blank'>Keshia
-              Rose</a>, not affiliated with <a href='https://track.toggl.com' target='_blank'>Toggl</a></p>
+          <div class="splitrow">
+            <div class="split">
+              <label>Start Date</label>
+
+              <input type="date" id="startdate" required />
+            </div>
+            <div class="split">
+              <label>End Date</label>
+              <input type="date" id="enddate" required disabled />
+            </div>
+            <div class="split check">
+              <input type="checkbox" id="today" checked />
+              <span>Always today</span>
+            </div>
+          </div>
+          <div class="row">
+            <label>Custom Parameters (Advanced & Optional)</label>
+            <span class="hint">Here you can add custom query parameters to your request. Be careful!</span>
+            <input type="text" id="custom" placeholder="client_ids=21530423,19860227,19860223&billable=yes" required />
+          </div>
+          <div class="row">
+            <button id="submit" type="submit">Get Toggl Data</button>
+            <span class="error" id="error"></span>
+          </div>
+          <div class="row footer">
+            <p>
+              Made by
+              <a href="https://keshiarose.github.io/Toggl-Web-Data-Connector/" target="_blank">Keshia Rose</a>, not affiliated with
+              <a href="https://track.toggl.com" target="_blank">Toggl</a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <script>
-    (function () {
-      Date.prototype.toDateInputValue = (function () {
-        var local = new Date(this);
-        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-        return local.toJSON().slice(0, 10);
-      });
-
-      let myConnector = tableau.makeConnector();
-
-      myConnector.init = function (initCallback) {
-        if (tableau.phase == tableau.phaseEnum.interactivePhase && tableau.connectionData.length > 0) {
-          const data = JSON.parse(tableau.connectionData);
-          $('#email').val(data.email || '')
-          $('#workspace').val(data.workspace || '')
-          $('#token').val(data.token || '')
-          $('#startdate').val(data.start || '')
-          $('#enddate').val(data.end || '')
-          $("#enddate").prop('disabled', data.check);
-          $('#today').prop('checked', data.check)
-          $('#custom').val(data.custom || '')
-        }
-
-        initCallback();
-      };
-
-      myConnector.getSchema = function (schemaCallback) {
-        var cols = [{
-          id: "id",
-          alias: "Entry ID",
-          dataType: tableau.dataTypeEnum.int,
-        }, {
-          id: "desc",
-          alias: "Description",
-          dataType: tableau.dataTypeEnum.string,
-        }, {
-          id: "start",
-          alias: "Start Date",
-          dataType: tableau.dataTypeEnum.datetime,
-        }, {
-          id: "end",
-          alias: "End Date",
-          dataType: tableau.dataTypeEnum.datetime,
-        }, {
-          id: "proj",
-          alias: "Project",
-          dataType: tableau.dataTypeEnum.string,
-        }, {
-          id: "task",
-          alias: "Task",
-          dataType: tableau.dataTypeEnum.string,
-        }, {
-          id: "client",
-          alias: "Client",
-          dataType: tableau.dataTypeEnum.string,
-        }, {
-          id: "bill",
-          alias: "Billable",
-          dataType: tableau.dataTypeEnum.float,
-        }, {
-          id: "isbill",
-          alias: "Is Billable",
-          dataType: tableau.dataTypeEnum.bool,
-        }, {
-          id: "user",
-          alias: "User",
-          dataType: tableau.dataTypeEnum.string,
-        }, {
-          id: "dur",
-          alias: "Duration (Seconds)",
-          dataType: tableau.dataTypeEnum.int,
-        }, {
-          id: "tags",
-          alias: "Tags",
-          dataType: tableau.dataTypeEnum.string,
-        }];
-
-        var tableInfo = {
-          id: "toggl",
-          alias: "Toggl Detailed Report",
-          columns: cols,
+    <script>
+      (function () {
+        Date.prototype.toDateInputValue = function () {
+          var local = new Date(this);
+          local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+          return local.toJSON().slice(0, 10);
         };
 
-        schemaCallback([tableInfo]);
-      };
+        let myConnector = tableau.makeConnector();
 
-      let pagescount = 0;
-      let tasks = [];
-
-      myConnector.getData = function (table, doneCallback) {
-        const cd = JSON.parse(tableau.connectionData);
-        const end = cd.check ? new Date().toDateInputValue() : cd.end;
-        const start = (new Date(Math.max(new Date(cd.start), new Date(cd.end).setYear(new Date(cd.end)
-          .getFullYear() - 1)))).toDateInputValue();
-
-        var url = "https://api.track.toggl.com/reports/api/v2/details?user_agent=" + cd.email + "&workspace_id=" +
-          cd.workspace + "&since=" + start + "&until=" + end + "&" + cd.custom;
-
-        $.ajax({
-          type: 'GET',
-          url: url,
-          dataType: 'json',
-          beforeSend: function (xhr) {
-            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(cd.token + ':api_token'));
-          },
-        }).done(function (data) {
-          totalPages = String(Math.ceil(data["total_count"] / data["per_page"]));
-          getData(url, cd.token, totalPages, table, doneCallback)
-        });
-      }
-
-      function getData(url, token, totalPages, table, doneCallback) {
-        $.ajax({
-          url: `${url}&page=${pagescount}`,
-          method: 'GET',
-          cache: false,
-          beforeSend: function (xhr) {
-            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(token + ':api_token'));
-          },
-          success: function (response) {
-            tasks = tasks.concat(response.data);
-            pagescount++;
-            if (pagescount < totalPages) {
-              getData(url, token, totalPages, table, doneCallback);
-            } else {
-              buildTable(tasks, table, doneCallback)
-            }
+        myConnector.init = function (initCallback) {
+          if (tableau.phase == tableau.phaseEnum.interactivePhase && tableau.connectionData.length > 0) {
+            const data = JSON.parse(tableau.connectionData);
+            $('#email').val(data.email || '');
+            $('#workspace').val(data.workspace || '');
+            $('#token').val(data.token || '');
+            $('#startdate').val(data.start || '');
+            $('#enddate').val(data.end || '');
+            $('#enddate').prop('disabled', data.check);
+            $('#today').prop('checked', data.check);
+            $('#custom').val(data.custom || '');
           }
-        });
-      }
 
-      function buildTable(tasks, table, doneCallback) {
-        let tableData = [];
-        for (task of tasks) {
-          tags = [];
-          for (tag of task.tags) {
-            tags.push(tag);
-          }
-          tags = tags.join(", ");
+          initCallback();
+        };
 
-          tableData.push({
-            "id": task.id,
-            "desc": task.description,
-            "start": task.start.substring(0, 10) + " " + task.start.substring(11, 18),
-            "end": task.end.substring(0, 10) + " " + task.end.substring(11, 18),
-            "proj": task.project,
-            "task": task.task,
-            "client": task.client,
-            "bill": task.billable,
-            "isbill": task.is_billable,
-            "user": task.user,
-            "dur": task.dur / 1000,
-            "tags": tags,
+        myConnector.getSchema = function (schemaCallback) {
+          var cols = [
+            {
+              id: 'id',
+              alias: 'Entry ID',
+              dataType: tableau.dataTypeEnum.int,
+            },
+            {
+              id: 'pid',
+              alias: 'Project ID',
+              dataType: tableau.dataTypeEnum.int,
+            },
+            {
+              id: 'tid',
+              alias: 'Task ID',
+              dataType: tableau.dataTypeEnum.int,
+            },
+            {
+              id: 'uid',
+              alias: 'User ID',
+              dataType: tableau.dataTypeEnum.int,
+            },
+            {
+              id: 'desc',
+              alias: 'Description',
+              dataType: tableau.dataTypeEnum.string,
+            },
+            {
+              id: 'start',
+              alias: 'Start Date',
+              dataType: tableau.dataTypeEnum.datetime,
+            },
+            {
+              id: 'end',
+              alias: 'End Date',
+              dataType: tableau.dataTypeEnum.datetime,
+            },
+            {
+              id: 'updated',
+              alias: 'Updated',
+              dataType: tableau.dataTypeEnum.datetime,
+            },
+            {
+              id: 'useStop',
+              alias: 'Use Stop',
+              dataType: tableau.dataTypeEnum.bool,
+            },
+            {
+              id: 'proj',
+              alias: 'Project',
+              dataType: tableau.dataTypeEnum.string,
+            },
+            {
+              id: 'task',
+              alias: 'Task',
+              dataType: tableau.dataTypeEnum.string,
+            },
+            {
+              id: 'client',
+              alias: 'Client',
+              dataType: tableau.dataTypeEnum.string,
+            },
+            {
+              id: 'bill',
+              alias: 'Billable',
+              dataType: tableau.dataTypeEnum.float,
+            },
+            {
+              id: 'isbill',
+              alias: 'Is Billable',
+              dataType: tableau.dataTypeEnum.bool,
+            },
+            {
+              id: 'cur',
+              alias: 'Currency',
+              dataType: tableau.dataTypeEnum.string,
+            },
+            {
+              id: 'user',
+              alias: 'User',
+              dataType: tableau.dataTypeEnum.string,
+            },
+            {
+              id: 'dur',
+              alias: 'Duration (Seconds)',
+              dataType: tableau.dataTypeEnum.int,
+            },
+            {
+              id: 'tags',
+              alias: 'Tags',
+              dataType: tableau.dataTypeEnum.string,
+            },
+          ];
+
+          var tableInfo = {
+            id: 'toggl',
+            alias: 'Toggl Detailed Report',
+            columns: cols,
+          };
+
+          schemaCallback([tableInfo]);
+        };
+
+        let pagescount = 0;
+        let tasks = [];
+
+        myConnector.getData = function (table, doneCallback) {
+          const cd = JSON.parse(tableau.connectionData);
+          const end = cd.check ? new Date().toDateInputValue() : cd.end;
+          const start = new Date(Math.max(new Date(cd.start), new Date(cd.end).setYear(new Date(cd.end).getFullYear() - 1))).toDateInputValue();
+
+          var url = 'https://api.track.toggl.com/reports/api/v2/details?user_agent=' + cd.email + '&workspace_id=' + cd.workspace + '&since=' + start + '&until=' + end + '&' + cd.custom;
+
+          $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'json',
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('Authorization', 'Basic ' + btoa(cd.token + ':api_token'));
+            },
+          }).done(function (data) {
+            totalPages = String(Math.ceil(data['total_count'] / data['per_page']));
+            getData(url, cd.token, totalPages, table, doneCallback);
+          });
+        };
+
+        function getData(url, token, totalPages, table, doneCallback) {
+          $.ajax({
+            url: `${url}&page=${pagescount}`,
+            method: 'GET',
+            cache: false,
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('Authorization', 'Basic ' + btoa(token + ':api_token'));
+            },
+            success: function (response) {
+              tasks = tasks.concat(response.data);
+              pagescount++;
+              if (pagescount < totalPages) {
+                getData(url, token, totalPages, table, doneCallback);
+              } else {
+                buildTable(tasks, table, doneCallback);
+              }
+            },
           });
         }
-        table.appendRows(tableData);
-        doneCallback();
-      }
 
-      tableau.registerConnector(myConnector);
+        function buildTable(tasks, table, doneCallback) {
+          let tableData = [];
+          for (task of tasks) {
+            let tags = task.tags.join(', ');
 
-      function validateInputs() {
-        let output = $('#error');
-
-        let start = new Date($('#startdate').val());
-        let end = $('#today').is(':checked') ? new Date() : new Date($('#enddate').val());
-        var timeDiff = Math.abs(end.getTime() - start.getTime());
-        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-        if (!$('#email').val().trim() || !$('#workspace').val().trim() || !$('#token').val().trim() || !$(
-            '#startdate').val() || !$('#enddate').val()) {
-          output.html('Please fill in all fields.');
-          return false;
-        } else if (!$('#email').is(':valid')) {
-          output.html('Invalid email.');
-          return false;
-        } else if (diffDays > 366) {
-          output.html('Maximum date span is one year.');
-          return false;
-        } else {
-          return true;
-        }
-      }
-
-      $(document).ready(function () {
-        inputdate = new Date();
-        $('#enddate').val(inputdate.toDateInputValue());
-        inputdate.setDate(inputdate.getDate() - 30);
-        $("#startdate").val(inputdate.toDateInputValue());
-
-        $("#today").change(function () {
-          if (this.checked) {
-            $("#enddate").prop('disabled', true);
-          } else {
-            $("#enddate").prop('disabled', false);
-          }
-        });
-
-        $("#submit").click(function () {
-          let valid = validateInputs();
-          if (valid) {
-            tableau.connectionData = JSON.stringify({
-              email: $('#email').val().trim(),
-              workspace: $('#workspace').val().trim(),
-              token: $('#token').val().trim(),
-              start: $('#startdate').val(),
-              end: $('#enddate').val(),
-              check: $('#today').is(':checked'),
-              custom: $('#custom').val().trim(),
+            tableData.push({
+              id: task.id,
+              pid: task.pid,
+              tid: task.tid,
+              uid: task.uid,
+              desc: task.description,
+              start: task.start.substring(0, 10) + ' ' + task.start.substring(11, 18),
+              end: task.end.substring(0, 10) + ' ' + task.end.substring(11, 18),
+              updated: task.updated.substring(0, 10) + ' ' + task.updated.substring(11, 18),
+              useStop: task.use_stop,
+              proj: task.project,
+              task: task.task,
+              client: task.client,
+              bill: task.billable,
+              isbill: task.is_billable,
+              cur: task.cur,
+              user: task.user,
+              dur: task.dur / 1000,
+              tags: tags,
             });
-
-            tableau.connectionName = "Toggl";
-            tableau.submit();
           }
-        });
-      });
-    })();
-  </script>
-  <img src="https://devplat-hit-counter.herokuapp.com/counter.png" alt="" style="display:none;" aria-hidden="true">
-  <!-- Hit tracker -->
-</body>
+          table.appendRows(tableData);
+          doneCallback();
+        }
 
+        tableau.registerConnector(myConnector);
+
+        function validateInputs() {
+          let output = $('#error');
+
+          let start = new Date($('#startdate').val());
+          let end = $('#today').is(':checked') ? new Date() : new Date($('#enddate').val());
+          var timeDiff = Math.abs(end.getTime() - start.getTime());
+          var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+          if (!$('#email').val().trim() || !$('#workspace').val().trim() || !$('#token').val().trim() || !$('#startdate').val() || !$('#enddate').val()) {
+            output.html('Please fill in all fields.');
+            return false;
+          } else if (!$('#email').is(':valid')) {
+            output.html('Invalid email.');
+            return false;
+          } else if (diffDays > 366) {
+            output.html('Maximum date span is one year.');
+            return false;
+          } else {
+            return true;
+          }
+        }
+
+        $(document).ready(function () {
+          inputdate = new Date();
+          $('#enddate').val(inputdate.toDateInputValue());
+          inputdate.setDate(inputdate.getDate() - 30);
+          $('#startdate').val(inputdate.toDateInputValue());
+
+          $('#today').change(function () {
+            if (this.checked) {
+              $('#enddate').prop('disabled', true);
+            } else {
+              $('#enddate').prop('disabled', false);
+            }
+          });
+
+          $('#submit').click(function () {
+            let valid = validateInputs();
+            if (valid) {
+              tableau.connectionData = JSON.stringify({
+                email: $('#email').val().trim(),
+                workspace: $('#workspace').val().trim(),
+                token: $('#token').val().trim(),
+                start: $('#startdate').val(),
+                end: $('#enddate').val(),
+                check: $('#today').is(':checked'),
+                custom: $('#custom').val().trim(),
+              });
+
+              tableau.connectionName = 'Toggl';
+              tableau.submit();
+            }
+          });
+        });
+      })();
+    </script>
+    <img src="https://devplat-hit-counter.herokuapp.com/counter.png" alt="" style="display: none" aria-hidden="true" />
+    <!-- Hit tracker -->
+  </body>
 </html>
